@@ -1,2 +1,1 @@
-# CV
-My resume
+# visit page > https://samglish.github.io/CV/
