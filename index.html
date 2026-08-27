@@ -1,1337 +1,1314 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Beidi Dina Samuel — Cybersecurity Expert</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:       #07090c;
-      --bg2:      #0b0f14;
-      --bg3:      #101620;
-      --surface:  #131c26;
-      --surface2: #192332;
-      --border:   rgba(0,255,180,.10);
-      --border2:  rgba(0,255,180,.28);
-      --accent:   #00ffb4;
-      --accent2:  #00c8ff;
-      --dim:      rgba(0,255,180,.06);
-      --text:     #ddeee8;
-      --muted:    #607a72;
-      --mono: 'Space Mono', monospace;
-      --sans: 'Syne', sans-serif;
-      --sidebar: 280px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      line-height: 1.7;
-      display: flex;
-      min-height: 100vh;
-    }
-
-    body::before {
-      content:'';
-      position:fixed; inset:0;
-      background-image:
-        linear-gradient(rgba(0,255,180,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,255,180,.025) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events:none; z-index:0;
-    }
-
-    /* ── SIDEBAR ── */
-    #sidebar {
-      width: var(--sidebar);
-      min-height: 100vh;
-      position: fixed;
-      left: 0; top: 0; bottom: 0;
-      z-index: 200;
-      background: var(--bg2);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 2.5rem 0 2rem;
-      overflow-y: auto;
-    }
-
-    .sidebar-brand {
-      padding: 0 2rem 2rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-
-    .avatar-wrap {
-      width: 96px; height: 96px;
-      margin: 0 auto 1rem;
-      position: relative;
-    }
-
-    .avatar-wrap img {
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--border2);
-      filter: saturate(0.8) brightness(0.9);
-    }
-
-    .avatar-wrap::after {
-      content:'';
-      position:absolute; inset:-4px;
-      border-radius:50%;
-      border: 1px solid transparent;
-      border-top-color: var(--accent);
-      animation: spin 8s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .sidebar-name {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -.01em;
-      line-height: 1.3;
-    }
-
-    .sidebar-role {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: .12em;
-      margin-top: 4px;
-      text-transform: uppercase;
-    }
-
-    .sidebar-socials {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 1rem;
-    }
-
-    .social-ico {
-      width: 28px; height: 28px;
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted);
-      text-decoration: none;
-      font-family: var(--mono);
-      font-size: 9px;
-      transition: color .2s, border-color .2s;
-    }
-    .social-ico:hover { color: var(--accent); border-color: var(--border2); }
-
-    nav ul { list-style: none; padding: 0 1rem; }
-    nav li { margin-bottom: 2px; }
-
-    nav a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 1rem;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color .2s, background .2s;
-      border-left: 2px solid transparent;
-    }
-
-    nav a:hover, nav a.active {
-      color: var(--accent);
-      background: var(--dim);
-      border-left-color: var(--accent);
-    }
-
-    nav a .nav-num { color: rgba(0,255,180,.3); font-size: 9px; }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1.5rem 1.5rem 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .avail-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--accent);
-      background: rgba(0,255,180,.07);
-      border: 1px solid var(--border2);
-      padding: 8px 12px;
-    }
-
-    .pulse-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:.4; transform:scale(.7); }
-    }
-
-    /* ── MAIN ── */
-    #main {
-      margin-left: var(--sidebar);
-      flex: 1;
-      position: relative;
-      z-index: 1;
-    }
-
-    section { border-bottom: 1px solid var(--border); }
-
-    .s-inner {
-      max-width: 860px;
-      padding: 5rem 4rem;
-    }
-
-    .s-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      margin-bottom: .6rem;
-    }
-
-    h2.s-title {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 800;
-      letter-spacing: -.03em;
-      line-height: 1;
-      color: var(--text);
-      margin-bottom: 2.5rem;
-    }
-
-    /* HERO */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      background: var(--bg);
-      position: relative;
-      overflow: hidden;
-    }
-
-    #hero::before {
-      content:'';
-      position:absolute;
-      width:700px; height:700px;
-      border-radius:50%;
-      background: radial-gradient(circle, rgba(0,255,180,.035) 0%, transparent 70%);
-      top:-150px; right:-150px;
-      pointer-events:none;
-    }
-
-    .hero-inner { padding: 5rem 4rem; }
-
-    .hero-eyebrow {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: .2em;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .hero-eyebrow::before {
-      content:'';
-      width:32px; height:1px;
-      background: var(--accent);
-    }
-
-    h1 {
-      font-size: clamp(3.5rem, 7vw, 6.5rem);
-      font-weight: 800;
-      line-height: .92;
-      letter-spacing: -.04em;
-      margin-bottom: 1.5rem;
-    }
-
-    h1 em { font-style:normal; color: var(--accent); }
-
-    .hero-desc {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 480px;
-      line-height: 2;
-      margin-bottom: 2.5rem;
-    }
-
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 2.5rem;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .08em;
-      padding: 5px 12px;
-      border: 1px solid var(--border2);
-      color: var(--accent);
-      background: rgba(0,255,180,.05);
-    }
-
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-
-    .btn-solid {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--accent);
-      padding: 13px 26px;
-      text-decoration: none;
-      transition: background .2s, transform .15s;
-      display: inline-block;
-    }
-    .btn-solid:hover { background: #00e6a0; transform: translateY(-1px); }
-
-    .btn-line {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--border2);
-      padding: 13px 26px;
-      text-decoration: none;
-      transition: background .2s;
-      display: inline-block;
-    }
-    .btn-line:hover { background: rgba(0,255,180,.08); }
-
-    .blink { animation: blink 1.1s step-start infinite; }
-    @keyframes blink { 50%{ opacity:0; } }
-
-    /* ABOUT */
-    #about { background: var(--bg2); }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .about-photo-wrap { position: relative; }
-
-    .about-photo-wrap img {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      filter: saturate(.7) brightness(.85);
-      border: 1px solid var(--border);
-      display: block;
-    }
-
-    .about-photo-wrap .offset-border {
-      position: absolute;
-      inset: 0;
-      border: 1px solid var(--border2);
-      transform: translate(8px, 8px);
-      pointer-events: none;
-    }
-
-    .about-text p {
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.9;
-      margin-bottom: 1.25rem;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: .75rem;
-      margin-top: 1.75rem;
-      border-top: 1px solid var(--border);
-      padding-top: 1.5rem;
-    }
-
-    .info-cell { font-family: var(--mono); font-size: 11px; }
-    .info-cell .lbl { color: var(--muted); display:block; margin-bottom:2px; }
-    .info-cell .val { color: var(--accent); }
-    .info-cell a { color: var(--accent); text-decoration:none; }
-
-    .stats-strip {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 1px;
-      background: var(--border);
-      margin-top: 12px;
-    }
-
-    .stat {
-      background: var(--bg3);
-      padding: 1rem .5rem;
-      text-align: center;
-    }
-
-    .stat-n {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--accent);
-      display: block;
-      line-height: 1;
-    }
-
-    .stat-l {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-top: 4px;
-      display: block;
-    }
-
-    /* SKILLS */
-    #skills { background: var(--bg); }
-
-    .gh-row {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-    }
-
-    .gh-row img {
-      height: 130px;
-      border: 1px solid var(--border);
-    }
-
-    .trophy-wrap {
-      margin-bottom: 2rem;
-      overflow-x: auto;
-    }
-
-    .trophy-wrap img { border: 1px solid var(--border); }
-
-    .skill-list { display: flex; flex-direction: column; gap: 1.1rem; }
-
-    .sk { display: flex; flex-direction: column; gap: 6px; }
-
-    .sk-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .sk-name { font-size: 14px; font-weight: 600; color: var(--text); }
-    .sk-pct { font-family: var(--mono); font-size: 12px; color: var(--accent); }
-
-    .sk-track { height: 1px; background: var(--border); position: relative; }
-
-    .sk-fill {
-      height: 100%;
-      background: var(--accent);
-      position: relative;
-    }
-
-    .sk-fill::after {
-      content:'';
-      position:absolute;
-      right:-3px; top:-3px;
-      width:7px; height:7px;
-      background: var(--accent);
-    }
-
-    .sk-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-
-    .sk-tag {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 2px 8px;
-      letter-spacing: .06em;
-    }
-
-    .badge-row { margin-top: 2rem; }
-    .badge-row img { border: 1px solid var(--border); max-width: 200px; }
-
-    /* RESUME */
-    #resume { background: var(--bg2); }
-
-    .resume-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-    }
-
-    .res-col h3 {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .2em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-      padding-bottom: .75rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tl { position: relative; padding-left: 1.5rem; }
-
-    .tl::before {
-      content:'';
-      position:absolute;
-      left:0; top:0; bottom:0;
-      width:1px;
-      background: linear-gradient(to bottom, var(--accent) 0%, rgba(0,255,180,.0) 100%);
-    }
-
-    .tl-item { position: relative; padding-bottom: 2rem; }
-
-    .tl-item::before {
-      content:'';
-      position:absolute;
-      left:-1.75rem; top:5px;
-      width:7px; height:7px;
-      background: var(--accent);
-    }
-
-    .tl-date {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: .08em;
-      margin-bottom: 3px;
-    }
-
-    .tl-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 2px;
-      line-height: 1.3;
-    }
-
-    .tl-org {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    /* PORTFOLIO */
-    #portfolio { background: var(--bg); }
-
-    .posts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .post-card {
-      background: var(--bg2);
-      overflow: hidden;
-      position: relative;
-      aspect-ratio: 4/3;
-    }
-
-    .post-card img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: saturate(.6) brightness(.7);
-      transition: filter .4s, transform .4s;
-      display: block;
-    }
-
-    .post-card:hover img {
-      filter: saturate(.9) brightness(.9);
-      transform: scale(1.05);
-    }
-
-    .post-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(7,9,12,.95) 0%, transparent 55%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.25rem;
-      opacity: 0;
-      transition: opacity .3s;
-    }
-
-    .post-card:hover .post-overlay { opacity: 1; }
-
-    .post-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-    .post-cat { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: .1em; }
-
-    /* SERVICES */
-    #services { background: var(--bg2); }
-
-    .srv-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .srv {
-      background: var(--bg);
-      padding: 2rem 1.5rem;
-      transition: background .2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .srv::before {
-      content:'';
-      position:absolute;
-      top:0; left:0; right:0;
-      height:2px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .3s;
-    }
-
-    .srv:hover { background: var(--surface); }
-    .srv:hover::before { transform: scaleX(1); }
-
-    .srv-num { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .15em; margin-bottom: .75rem; }
-    .srv-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
-    .srv-desc { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.85; }
-
-    /* CONTACT */
-    #contact { background: var(--bg); }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    .contact-desc { color: var(--muted); font-size: 15px; line-height: 1.9; margin-bottom: 2rem; }
-
-    .c-links { display: flex; flex-direction: column; gap: 8px; }
-
-    .c-link {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-      text-decoration: none;
-      padding: .85rem 1rem;
-      border: 1px solid var(--border);
-      background: var(--bg2);
-      transition: color .2s, border-color .2s;
-    }
-
-    .c-link:hover { color: var(--accent); border-color: var(--border2); }
-
-    .c-icon {
-      width: 28px; height: 28px;
-      border: 1px solid var(--border2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px;
-      color: var(--accent);
-      flex-shrink: 0;
-      font-family: var(--mono);
-    }
-
-    .cf { display: flex; flex-direction: column; gap: .8rem; }
-
-    .fg { display: flex; flex-direction: column; gap: .35rem; }
-
-    .fg label {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-
-    .fg input, .fg textarea {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 13px;
-      padding: 11px 14px;
-      outline: none;
-      transition: border-color .2s;
-      resize: vertical;
-      width: 100%;
-    }
-
-    .fg input:focus, .fg textarea:focus { border-color: var(--accent); }
-    .fg textarea { min-height: 120px; }
-
-    .cf-submit {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--accent);
-      border: none;
-      padding: 13px 26px;
-      cursor: pointer;
-      align-self: flex-start;
-      transition: background .2s;
-    }
-    .cf-submit:hover { background: #00e6a0; }
-
-    /* FOOTER */
-    #footer {
-      position: relative;
-      z-index: 1;
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-      padding: 1.5rem 4rem;
-      margin-left: var(--sidebar);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    #footer p { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; }
-
-    /* MOBILE */
-    .mobile-toggle {
-      display: none;
-      position: fixed;
-      top: 1rem; left: 1rem;
-      z-index: 300;
-      background: var(--bg2);
-      border: 1px solid var(--border2);
-      color: var(--accent);
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 8px 14px;
-      cursor: pointer;
-    }
-
-    /* FADE-UP */
-    .fu {
-      opacity:0;
-      transform:translateY(20px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .fu.in { opacity:1; transform:translateY(0); }
-
-    @media (max-width: 900px) {
-      :root { --sidebar: 0px; }
-      #sidebar {
-        transform: translateX(-100%);
-        transition: transform .3s;
-        width: 260px;
-      }
-      #sidebar.open { transform: translateX(0); }
-      .mobile-toggle { display: block; }
-      #main { margin-left: 0; }
-      #footer { margin-left: 0; padding: 1.5rem; }
-      .s-inner { padding: 3rem 1.5rem; }
-      .hero-inner { padding: 5rem 1.5rem 3rem; }
-      .about-grid { grid-template-columns: 1fr; }
-      .resume-cols { grid-template-columns: 1fr; gap: 2.5rem; }
-      .posts-grid { grid-template-columns: 1fr 1fr; }
-      .srv-grid { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-    }
-
-    @media (max-width: 500px) {
-      .posts-grid { grid-template-columns: 1fr; }
-      .gh-row { flex-direction: column; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beidi Dina Samuel — Graduate Assistant, ENSPM</title>
+<meta name="description" content="Portfolio académique de Beidi Dina Samuel, Graduate Assistant à l'ENSPM et doctorant en Informatique.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-body:#F0F2F8;
+    --bg-card:#FFFFFF;
+    --bg-header:#1B2332;
+    --text-primary:#1B2332;
+    --text-secondary:#4A5568;
+    --text-muted:#718096;
+    --accent:#4F46E5;
+    --accent-soft:#EEF2FF;
+    --accent-hover:#4338CA;
+    --border:#E2E8F0;
+    --shadow:0 4px 24px rgba(27,35,50,0.08);
+    --shadow-lg:0 12px 40px rgba(27,35,50,0.12);
+    --radius:16px;
+    --radius-sm:10px;
+    --font-body:'Inter',sans-serif;
+    --maxw:1140px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-body);
+    color:var(--text-primary);
+    font-family:var(--font-body);
+    line-height:1.6;
+    font-size:15px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none;transition:color .2s;}
+  a:hover{color:var(--accent-hover);}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.5rem;}
+
+  /* ===== LANG TOGGLE ===== */
+  .lang-toggle{
+    background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);
+    color:#fff;font-size:12px;font-weight:700;letter-spacing:0.06em;
+    padding:7px 14px;border-radius:6px;cursor:pointer;transition:all .2s;
+    text-transform:uppercase;
+  }
+  .lang-toggle:hover{background:var(--accent);border-color:var(--accent);}
+
+  body.lang-en .lang-fr{display:none !important;}
+  body.lang-fr .lang-en{display:none !important;}
+
+  /* ===== HEADER ===== */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:var(--bg-header);
+    box-shadow:0 2px 12px rgba(0,0,0,0.15);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:0 1.5rem;
+    height:68px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none;}
+  .brand-avatar{
+    width:40px;height:40px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),#7C3AED);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:16px;
+  }
+  .brand-text{line-height:1.25;}
+  .brand-name{font-weight:600;font-size:16px;color:#F8FAFC;}
+  .brand-role{font-size:11px;color:#94A3B8;letter-spacing:0.04em;}
+
+  nav.primary ul{list-style:none;display:flex;gap:2rem;}
+  nav.primary a{
+    font-size:12.5px;font-weight:500;color:#CBD5E1;
+    letter-spacing:0.03em;padding:6px 0;
+    border-bottom:2px solid transparent;
+    transition:all .2s;
+  }
+  nav.primary a:hover,nav.primary a.active{color:#fff;border-color:var(--accent);}
+
+  .nav-toggle-btn{
+    display:none;background:none;border:1px solid rgba(255,255,255,0.2);
+    color:#fff;font-size:12px;letter-spacing:0.08em;
+    padding:8px 14px;border-radius:6px;cursor:pointer;
+  }
+
+  /* ===== SECTIONS ===== */
+  section{padding:4rem 0;}
+  .s-header{margin-bottom:2.5rem;}
+  .s-eyebrow{
+    font-size:11px;font-weight:600;letter-spacing:0.18em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:.6rem;
+  }
+  .s-title{
+    font-weight:700;
+    font-size:clamp(1.6rem,3vw,2.2rem);color:var(--text-primary);
+    line-height:1.2;
+  }
+
+  /* ===== HERO ===== */
+  #home{padding-top:3rem;padding-bottom:2rem;}
+  .hero-card{
+    background:var(--bg-card);border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);padding:2.5rem;
+    display:grid;grid-template-columns:280px 1fr;gap:2.5rem;align-items:start;
+  }
+  .hero-photo{
+    width:100%;aspect-ratio:3/4;border-radius:var(--radius-sm);
+    background:linear-gradient(135deg,#E2E8F0,#CBD5E1);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--text-muted);font-size:13px;text-align:center;padding:1rem;
+    overflow:hidden;position:relative;
+  }
+  .hero-photo img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;}
+
+  .hero-right{display:flex;flex-direction:column;gap:1.5rem;}
+
+  .hero-badges{
+    display:flex;gap:8px;flex-wrap:wrap;
+  }
+  .hero-badge{
+    font-size:10px;font-weight:700;letter-spacing:0.12em;
+    text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
+    padding:6px 14px;border-radius:100px;
+  }
+
+  .hero-name{
+    font-weight:800;
+    font-size:clamp(1.8rem,3.5vw,2.4rem);line-height:1.15;color:var(--text-primary);
+  }
+
+  .hero-role{
+    font-size:1rem;font-weight:500;color:var(--text-secondary);
+  }
+
+  .hero-info-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+  }
+  .hero-info-item{
+    background:#F8FAFC;border:1px solid var(--border);border-radius:var(--radius-sm);
+    padding:1rem 1.1rem;
+  }
+  .hero-info-label{
+    font-size:9.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--text-muted);margin-bottom:5px;
+  }
+  .hero-info-value{
+    font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.4;
+  }
+
+  .hero-stats{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;
+    margin-top:.5rem;
+  }
+  .hero-stat{
+    text-align:left;
+  }
+  .hero-stat-num{
+    font-weight:800;font-size:1.5rem;color:var(--accent);line-height:1;
+  }
+  .hero-stat-label{
+    font-size:10px;font-weight:500;color:var(--text-muted);margin-top:5px;letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+
+  .hero-contact{
+    margin-top:.5rem;
+    border-top:1px solid var(--border);padding-top:1.2rem;
+    display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;
+  }
+  .hero-contact-col h4{
+    font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--text-muted);margin-bottom:8px;
+  }
+  .hero-contact-col p{
+    font-size:12.5px;color:var(--text-secondary);line-height:1.7;
+  }
+  .hero-contact-col a{
+    font-size:12.5px;font-weight:600;color:var(--accent);
+  }
+  .hero-contact-col a:hover{text-decoration:underline;}
+
+  /* ===== EDUCATION ===== */
+  .edu-timeline{position:relative;padding-left:2rem;}
+  .edu-timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--border);}
+  .edu-item{position:relative;padding-bottom:2rem;}
+  .edu-item:last-child{padding-bottom:0;}
+  .edu-item::before{content:'';position:absolute;left:-2.3rem;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 0 0 2px var(--accent);}
+  .edu-date{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:0.06em;margin-bottom:3px;}
+  .edu-degree{font-weight:700;font-size:1.15rem;color:var(--text-primary);margin-bottom:3px;}
+  .edu-school{font-size:13.5px;color:var(--text-muted);}
+
+  /* ===== RESEARCH ===== */
+  .research-lede{color:var(--text-muted);max-width:720px;margin-bottom:2rem;font-size:15px;line-height:1.7;}
+  .research-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;
+  }
+  .r-card{
+    background:var(--bg-card);border-radius:var(--radius-sm);
+    box-shadow:var(--shadow);padding:1.6rem;
+    border-left:4px solid var(--accent);
+  }
+  .r-card-num{
+    font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.1em;margin-bottom:.6rem;
+  }
+  .r-card-title{
+    font-weight:700;font-size:1.15rem;margin-bottom:.5rem;
+  }
+  .r-card-desc{font-size:13.5px;color:var(--text-muted);line-height:1.7;}
+
+  .pub-box{
+    margin-top:2rem;background:var(--accent-soft);border:1px dashed var(--accent);
+    border-radius:var(--radius-sm);padding:2rem;text-align:center;
+  }
+  .pub-box-title{font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem;}
+  .pub-box-desc{font-size:13.5px;color:var(--text-muted);max-width:520px;margin:0 auto;}
+
+  .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem;}
+  .tag{
+    font-size:11px;font-weight:500;letter-spacing:0.04em;
+    padding:5px 12px;border:1px solid var(--border);color:var(--text-secondary);
+    background:#F8FAFC;border-radius:100px;
+  }
+
+  /* ===== TEACHING ===== */
+  .teaching-table-wrap{overflow-x:auto;}
+  .teaching-table{
+    width:100%;border-collapse:separate;border-spacing:0;
+    background:var(--bg-card);border-radius:var(--radius-sm);
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .teaching-table th{
+    background:#F8FAFC;font-size:11px;font-weight:600;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--text-muted);text-align:left;
+    padding:1rem 1.25rem;border-bottom:1px solid var(--border);
+  }
+  .teaching-table td{
+    padding:1rem 1.25rem;border-bottom:1px solid var(--border);
+    font-size:13.5px;color:var(--text-primary);vertical-align:top;
+  }
+  .teaching-table tr:last-child td{border-bottom:none;}
+  .teaching-table .inst-row td{
+    background:#F1F5F9;font-weight:700;font-size:13px;color:var(--text-primary);
+    border-bottom:1px solid var(--border);
+  }
+  .teaching-table .lvl{font-size:11px;color:var(--text-muted);font-weight:500;}
+
+  /* ===== SUPERVISION ===== */
+  .sup-note{
+    font-size:13px;color:var(--text-muted);background:#F8FAFC;
+    border:1px solid var(--border);border-radius:var(--radius-sm);
+    padding:1rem 1.2rem;margin-bottom:1.5rem;
+  }
+  .sup-note b{color:var(--text-primary);}
+
+  .ledger-wrap{overflow-x:auto;}
+  .ledger{
+    width:100%;border-collapse:separate;border-spacing:0;
+    background:var(--bg-card);border-radius:var(--radius-sm);
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .ledger thead th{
+    background:#F8FAFC;font-size:10.5px;font-weight:600;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--text-muted);text-align:left;
+    padding:1rem 1.25rem;border-bottom:1px solid var(--border);
+  }
+  .ledger tbody td{
+    padding:1.2rem 1.25rem;border-bottom:1px solid var(--border);
+    font-size:13.5px;color:var(--text-primary);vertical-align:top;
+  }
+  .ledger tbody tr:last-child td{border-bottom:none;}
+  .ledger .col-degree{font-weight:700;white-space:nowrap;}
+  .ledger .col-student{font-weight:600;white-space:nowrap;}
+  .ledger .col-student .sub{font-weight:400;font-size:11px;color:var(--text-muted);display:block;margin-top:2px;}
+  .ledger .col-period{font-size:12px;color:var(--text-muted);white-space:nowrap;}
+  .ledger .col-topic{color:var(--text-secondary);max-width:320px;line-height:1.6;}
+  .ledger .col-role{font-size:12.5px;color:var(--text-secondary);white-space:nowrap;}
+
+  .status-pill{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
+    padding:5px 12px;border-radius:100px;border:1.5px solid var(--accent);color:var(--accent);background:var(--accent-soft);
+    white-space:nowrap;
+  }
+  .status-pill.done{border-color:#059669;color:#059669;background:#ECFDF5;}
+  .status-pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+  /* ===== AFFILIATIONS ===== */
+  .aff-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+  .aff-col{background:var(--bg-card);border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:1.8rem;}
+  .aff-col h3{
+    font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);
+  }
+  .aff-item{padding-bottom:1.2rem;margin-bottom:1.2rem;border-bottom:1px solid var(--border);}
+  .aff-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .aff-date{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:0.06em;margin-bottom:3px;}
+  .aff-title{font-weight:700;font-size:1.05rem;color:var(--text-primary);margin-bottom:2px;}
+  .aff-org{font-size:13px;color:var(--text-muted);}
+
+  /* ===== CONTACT ===== */
+  .contact-card{
+    background:var(--bg-card);border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);padding:2.5rem;
+    display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;
+  }
+  .contact-left{display:flex;flex-direction:column;gap:1.5rem;}
+  .contact-title{font-weight:800;font-size:2rem;color:var(--text-primary);}
+  .contact-desc{color:var(--text-muted);font-size:14px;line-height:1.7;}
+  .contact-links{display:flex;flex-direction:column;gap:.6rem;}
+  .c-row{
+    display:flex;align-items:center;gap:12px;
+    padding:.85rem 1rem;background:#F8FAFC;border:1px solid var(--border);border-radius:var(--radius-sm);
+    transition:all .2s;
+  }
+  .c-row:hover{border-color:var(--accent);background:var(--accent-soft);}
+  .c-icon{
+    width:32px;height:32px;border-radius:8px;
+    background:var(--text-primary);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;flex-shrink:0;
+  }
+  .c-row:hover .c-icon{background:var(--accent);}
+  .c-text{font-size:13.5px;color:var(--text-primary);font-weight:500;}
+  .c-text small{display:block;font-size:11px;color:var(--text-muted);font-weight:400;}
+
+  .contact-right{border-left:1px solid var(--border);padding-left:2.5rem;}
+  .contact-right h4{
+    font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:1rem;
+  }
+  .contact-right p{font-size:14px;color:var(--text-secondary);margin-bottom:1.25rem;line-height:1.7;}
+  .social-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:.5rem;}
+  .social-chip{
+    font-size:12px;font-weight:500;color:var(--text-secondary);
+    background:#F8FAFC;border:1px solid var(--border);border-radius:100px;
+    padding:6px 14px;transition:all .2s;
+  }
+  .social-chip:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+
+  /* ===== FOOTER ===== */
+  footer{padding:2rem 0;text-align:center;}
+  footer p{font-size:11.5px;color:var(--text-muted);letter-spacing:0.03em;}
+
+  /* ===== ANIMATIONS ===== */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:900px){
+    .hero-card{grid-template-columns:1fr;}
+    .hero-photo{max-width:260px;margin:0 auto;}
+    .hero-info-grid{grid-template-columns:1fr;}
+    .hero-stats{grid-template-columns:repeat(3,1fr);}
+    .hero-contact{grid-template-columns:1fr;}
+    .research-grid{grid-template-columns:1fr;}
+    .aff-grid{grid-template-columns:1fr;}
+    .contact-card{grid-template-columns:1fr;}
+    .contact-right{border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:2rem;}
+    nav.primary{
+      display:none;position:absolute;top:68px;left:0;right:0;
+      background:var(--bg-header);padding:1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+    nav.primary.open{display:block;}
+    nav.primary ul{flex-direction:column;gap:1rem;}
+    .nav-toggle-btn{display:block;}
+    .lang-toggle{margin-left:auto;margin-right:12px;}
+  }
+  @media(max-width:560px){
+    .hero-stats{grid-template-columns:repeat(2,1fr);}
+    .hero-card{padding:1.5rem;}
+    .contact-card{padding:1.5rem;}
+    section{padding:2.5rem 0;}
+  }
+</style>
 </head>
-<body>
+<body class="lang-en">
 
-  <button class="mobile-toggle" id="toggler" onclick="document.getElementById('sidebar').classList.toggle('open')">☰ MENU</button>
-
-  <!-- SIDEBAR -->
-  <aside id="sidebar">
-    <div class="sidebar-brand">
-      <div class="avatar-wrap">
-        <img src="https://samglish.github.io/CV/assets/img/profile-img.jpg" alt="Beidi Dina Samuel">
+<header>
+  <div class="nav-inner">
+    <a href="#home" class="brand">
+      <div class="brand-avatar">BS</div>
+      <div class="brand-text">
+        <div class="brand-name">Beidi Dina Samuel</div>
+        <div class="brand-role">
+          <span class="lang-fr">Moniteur · ENSPM</span>
+          <span class="lang-en">Graduate Assistant · ENSPM</span>
+        </div>
       </div>
-      <div class="sidebar-name">Beidi Dina Samuel</div>
-      <div class="sidebar-role">PhD Candidate IT · CyberSec</div>
-      <div class="sidebar-socials">
-        <a href="https://twitter.com/BeidiSamuel" class="social-ico" title="Twitter">TW</a>
-        <a href="https://github.com/samglish" class="social-ico" title="GitHub">GH</a>
-        <a href="https://linkedin.com/in/beididinasamuel" class="social-ico" title="LinkedIn">LI</a>
-        <a href="https://instagram.com/beidi_dina_samuel" class="social-ico" title="Instagram">IG</a>
-        <a href="https://web.facebook.com/profile.php?id=100007165625739" class="social-ico" title="Facebook">FB</a>
-      </div>
-    </div>
-
-    <nav>
+    </a>
+    <nav class="primary" id="primaryNav">
       <ul>
-        <li><a href="#hero" class="active"><span class="nav-num">00</span> Home</a></li>
-        <li><a href="#about"><span class="nav-num">01</span> About</a></li>
-        <li><a href="#skills"><span class="nav-num">02</span> Skills</a></li>
-        <li><a href="#resume"><span class="nav-num">03</span> Resume</a></li>
-        <li><a href="#portfolio"><span class="nav-num">04</span> My Posts</a></li>
-        <li><a href="#services"><span class="nav-num">05</span> Services</a></li>
-        <li><a href="#contact"><span class="nav-num">06</span> Contact</a></li>
+        <li><a href="#home" class="active">
+          <span class="lang-fr">Accueil</span><span class="lang-en">Home</span>
+        </a></li>
+        <li><a href="#about">
+          <span class="lang-fr">À propos</span><span class="lang-en">About</span>
+        </a></li>
+        <li><a href="#education">
+          <span class="lang-fr">Formation</span><span class="lang-en">Education</span>
+        </a></li>
+        <li><a href="#research">
+          <span class="lang-fr">Recherche</span><span class="lang-en">Research</span>
+        </a></li>
+        <li><a href="#teaching">
+          <span class="lang-fr">Enseignement</span><span class="lang-en">Teaching</span>
+        </a></li>
+        <li><a href="#supervision">
+          <span class="lang-fr">Encadrement</span><span class="lang-en">Supervision</span>
+        </a></li>
+        <li><a href="#affiliations">
+          <span class="lang-fr">Affiliations &amp; Services</span><span class="lang-en">Affiliations &amp; Service</span>
+        </a></li>
+        <li><a href="#contact">
+          <span class="lang-fr">Contact</span><span class="lang-en">Contact</span>
+        </a></li>
       </ul>
     </nav>
-
-    <div class="sidebar-footer">
-      <div class="avail-badge">
-        <div class="pulse-dot"></div>
-        Available for hire
-      </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="lang-toggle" id="langToggle">FR</button>
+      <button class="nav-toggle-btn" id="navToggle">MENU</button>
     </div>
-  </aside>
+  </div>
+</header>
 
-  <!-- MAIN -->
-  <div id="main">
+<!-- HOME / HERO -->
+<section id="home">
+  <div class="wrap">
+    <div class="hero-card reveal">
+      <div class="hero-photo">
+        <img src="photo.jpg" alt="Beidi Dina Samuel">
+        <span style="z-index:1;">
+          <span class="lang-fr"></span>
+          <span class="lang-en"></span>
+        </span>
+      </div>
+      <div class="hero-right">
+        <div class="hero-badges">
+          <span class="hero-badge">
+            <span class="lang-fr">Moniteur</span>
+            <span class="lang-en">Graduate Assistant</span>
+          </span>
+          <span class="hero-badge">
+            <span class="lang-fr">Doctorant</span>
+            <span class="lang-en">PhD Candidate</span>
+          </span>
+          <span class="hero-badge">Machine Learning</span>
+          <span class="hero-badge">
+            <span class="lang-fr">Cybersécurité</span>
+            <span class="lang-en">Cybersecurity</span>
+          </span>
+          <span class="hero-badge">IoT</span>
+        </div>
 
-    <!-- HERO -->
-    <section id="hero">
-      <div class="hero-inner">
-        <div class="hero-eyebrow">Cameroon 🇨🇲 · Based in Yola, Nigeria</div>
-        <h1>BEIDI<br>DINA<br><em>SAMUEL<span class="blink" style="color:var(--accent);opacity:.5">_</span></em></h1>
-        <p class="hero-desc">
-          // PhD candidate in IT &amp; Cybersecurity<br>
-          // Penetration tester · Web &amp; Mobile Dev<br>
-          // Open Source Enthusiast · 5+ yrs exp.
+        <h1 class="hero-name">Beidi Dina Samuel</h1>
+        <p class="hero-role">
+          <span class="lang-fr">Doctorant en Informatique</span>
+          <span class="lang-en">Ph.D Candidate in Computer Science</span>
         </p>
-        <div class="hero-tags">
-          <span class="tag">Cybersecurity</span>
-<span class="tag">Ethical Hacking</span>
-<span class="tag">Network Security</span>
-<span class="tag">Penetration Testing</span>
-<span class="tag">Metasploit</span>
-<span class="tag">Linux Administration</span>
-<span class="tag">Cisco Networking</span>
-<span class="tag">Systems Engineering</span>
-<span class="tag">Web Development</span>
-<span class="tag">Python Programming</span>
-<span class="tag">Machine Learning</span>
-<span class="tag">Open Source</span>
-<span class="tag">IT Tutor</span>
-        </div>
-        <div class="hero-btns">
-          <a href="#contact" class="btn-solid">Get in Touch</a>
-          <a href="#resume" class="btn-line">View Resume</a>
-        </div>
-      </div>
-    </section>
 
-    <!-- ABOUT -->
-    <section id="about">
-      <div class="s-inner">
-        <div class="s-label">01 — About</div>
-        <h2 class="s-title">Who I Am</h2>
-        <div class="about-grid fu">
-          <div class="about-photo-wrap">
-            <img src="https://samglish.github.io/CV/assets/img/profile-img.jpg" alt="Beidi Dina Samuel">
-            <div class="offset-border"></div>
-            <div class="stats-strip">
-              <div class="stat"><span class="stat-n">5+</span><span class="stat-l">Years</span></div>
-              <div class="stat"><span class="stat-n">2</span><span class="stat-l">Lang.</span></div>
-              <div class="stat"><span class="stat-n">∞</span><span class="stat-l">Drive</span></div>
+        <div class="hero-info-grid">
+          <div class="hero-info-item">
+            <div class="hero-info-label">
+              <span class="lang-fr">Position académique</span>
+              <span class="lang-en">Academic Position</span>
+            </div>
+            <div class="hero-info-value">
+              <span class="lang-fr">Moniteur à l'ENSPM</span>
+              <span class="lang-en">Graduate Assistant at ENSPM</span>
             </div>
           </div>
-          <div class="about-text">
+          <div class="hero-info-item">
+            <div class="hero-info-label">
+              <span class="lang-fr">Affiliation</span>
+              <span class="lang-en">Affiliation</span>
+            </div>
+            <div class="hero-info-value">
+              <span class="lang-fr">ENSPM, Université de Maroua, Cameroun</span>
+              <span class="lang-en">ENSPM, University of Maroua, Cameroon</span>
+            </div>
+          </div>
+          <div class="hero-info-item">
+            <div class="hero-info-label">
+              <span class="lang-fr">Doctorat</span>
+              <span class="lang-en">Doctoral Studies</span>
+            </div>
+            <div class="hero-info-value">Modibbo Adama University, Nigeria</div>
+          </div>
+          <div class="hero-info-item">
+            <div class="hero-info-label">
+              <span class="lang-fr">Centre de recherche</span>
+              <span class="lang-en">Research Center</span>
+            </div>
+            <div class="hero-info-value">
+              <span class="lang-fr">IoT Santé &amp; Cybersécurité</span>
+              <span class="lang-en">Healthcare IoT &amp; Cybersecurity</span>
+            </div>
+          </div>
+          <div class="hero-info-item">
+            <div class="hero-info-label">
+              <span class="lang-fr">Expertise</span>
+              <span class="lang-en">Expertise</span>
+            </div>
+            <div class="hero-info-value">
+              <span class="lang-fr">Machine Learning, Cybersécurité, IA, Réseaux, IoT</span>
+              <span class="lang-en">Machine Learning, Cybersecurity, AI, Networks, IoT</span>
+            </div>
+          </div>
+          <div class="hero-info-item">
+            <div class="hero-info-label">
+              <span class="lang-fr">Langues</span>
+              <span class="lang-en">Languages</span>
+            </div>
+            <div class="hero-info-value">
+              <span class="lang-fr">Français &amp; Anglais</span>
+              <span class="lang-en">French &amp; English</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="hero-badge">
+        <span class="lang-fr">École Nationale Supérieure Polytechnique de Maroua (ENSPM)</span>
+        <span class="lang-en">National Higher Polytechnic School of Maroua (ENSPM)</span>
+        </p>
+        
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">5</div>
+            <div class="hero-stat-label">
+              <span class="lang-fr">Projets</span>
+              <span class="lang-en">Projects</span>
+            </div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">10</div>
+            <div class="hero-stat-label">
+              <span class="lang-fr">Certifications</span>
+              <span class="lang-en">Certifications</span>
+            </div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">4+</div>
+            <div class="hero-stat-label">
+              <span class="lang-fr">Ans d'enseignement</span>
+              <span class="lang-en">Years Teaching</span>
+            </div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">7+</div>
+            <div class="hero-stat-label">
+              <span class="lang-fr">Cours dispensés</span>
+              <span class="lang-en">Courses Taught</span>
+            </div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">1</div>
+            <div class="hero-stat-label">
+              <span class="lang-fr">Encadrement</span>
+              <span class="lang-en">Supervision</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-contact">
+          <div class="hero-contact-col">
+            <h4>Contact</h4>
             <p>
-  PhD candidate in Information Technology with a research focus on machine learning applied to zero-day vulnerability detection, I am passionate about cybersecurity, artificial intelligence, and emerging technologies. My academic and professional journey combines technical expertise, research, teaching, and leadership, with experience in network and systems administration, cybersecurity, web/mobile development, and data analysis.
-</p>
-
-<p>
-  My research work focuses on leveraging machine learning techniques to improve the detection and prediction of zero-day vulnerabilities, contributing to the development of smarter and more proactive cybersecurity solutions.
-</p>
-
-<p>
-  Throughout my career, I have worked as a university teaching assistant, professional trainer, and computer science tutor, delivering courses in networking, Linux, programming, cybersecurity, and digital technologies. I have also contributed to the development of several digital platforms and collaborative projects focused on innovation and real-world problem solving.
-</p>
-
-<p>
-  In parallel with my research activities, I am actively involved in entrepreneurship and student leadership as Campus Director of the Hult Prize at the University of Maroua, where I support students in innovation and the development of impactful social projects.
-</p>
-
-<p>
-  Curious, adaptable, and results-oriented, I am particularly interested in cybersecurity, machine learning, intelligent infrastructures, and AI-driven solutions designed to address modern technological challenges.
-</p>
-            <div class="info-grid">
-              <div class="info-cell"><span class="lbl">// Birthday</span><span class="val">11 October</span></div>
-              <div class="info-cell"><span class="lbl">// Age</span><span class="val">27</span></div>
-              <div class="info-cell"><span class="lbl">// City</span><span class="val">Yola, Nigeria</span></div>
-              <div class="info-cell"><span class="lbl">// Degree</span><span class="val">Master's Degree 🎓</span></div>
-              <div class="info-cell"><span class="lbl">// Email</span><a href="mailto:beidisamuel11@gmail.com" class="val">beidisamuel11@gmail.com</a></div>
-              <div class="info-cell"><span class="lbl">// WhatsApp</span><a href="https://wa.me/+2348104094880" class="val">+234 810 409 4880</a></div>
-              <div class="info-cell"><span class="lbl">// School</span><span class="val">Modibbo Adama University, Nigeria</span></div>
-              <div class="info-cell"><span class="lbl">// Freelance</span><span class="val">Available 🟢</span></div>
-            </div>
+              <span class="lang-fr">ENSPM, Université de Maroua, Cameroun</span>
+              <span class="lang-en">ENSPM, University of Maroua, Cameroon</span>
+              <br>
+              e-mail: <a href="mailto:beidisamuel11@gmail.com">beidisamuel11@gmail.com</a><br>
+              <span class="lang-fr">Tél.</span><span class="lang-en">Tel.</span>: +237 620 601 651 / +234 810 409 4880
+            </p>
+          </div>
+          <div class="hero-contact-col">
+            <h4>
+              <span class="lang-fr">Réseaux &amp; Profils</span>
+              <span class="lang-en">Social &amp; Profiles</span>
+            </h4>
+            <p>
+              <a href="https://linkedin.com/in/beididinasamuel">LinkedIn</a> · 
+              <a href="https://github.com/samglish">GitHub</a> · 
+              <a href="https://twitter.com/BeidiSamuel">Twitter/X</a> · 
+              <a href="https://instagram.com/beidi_dina_samuel">Instagram</a> · 
+              <a href="https://web.facebook.com/profile.php?id=100007165625739">Facebook</a>
+            </p>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section id="skills">
-      <div class="s-inner">
-        <div class="s-label">02 — Skills</div>
-        <h2 class="s-title">Expertise</h2>
-
-        <div class="gh-row fu">
-          <img src="https://github-readme-stats.vercel.app/api/top-langs?username=samglish&show_icons=true&locale=en&layout=compact&theme=cobalt" alt="Top Languages" loading="lazy">
-          <img src="https://github-readme-stats.vercel.app/api?username=samglish&show_icons=true&locale=en&theme=tokyonight" alt="GitHub Stats" loading="lazy">
-        </div>
-
-        <div class="trophy-wrap fu">
-          <img src="https://github-profile-trophy.vercel.app/?username=samglish&row=1&theme=darkhub&margin-w=15&no-bg=true" alt="GitHub Trophies" loading="lazy" style="max-width:100%;">
-        </div>
-
-        <div class="skill-list fu">
-          <div class="sk">
-            <div class="sk-header"><span class="sk-name">Cybersecurity</span><span class="sk-pct">95%</span></div>
-            <div class="sk-track"><div class="sk-fill" style="width:95%"></div></div>
-            <div class="sk-tags"><span class="sk-tag">Penetration Testing</span><span class="sk-tag">Metasploit</span><span class="sk-tag">OSINT</span><span class="sk-tag">Network Vuln</span><span class="sk-tag">Web Vuln</span></div>
-          </div>
-          <div class="sk">
-            <div class="sk-header"><span class="sk-name">Web Development</span><span class="sk-pct">90%</span></div>
-            <div class="sk-track"><div class="sk-fill" style="width:90%"></div></div>
-            <div class="sk-tags"><span class="sk-tag">PHP</span><span class="sk-tag">Laravel</span><span class="sk-tag">JavaScript</span><span class="sk-tag">HTML/CSS</span><span class="sk-tag">REST APIs</span></div>
-          </div>
-          <div class="sk">
-            <div class="sk-header"><span class="sk-name">Network & Systems Admin</span><span class="sk-pct">80%</span></div>
-            <div class="sk-track"><div class="sk-fill" style="width:80%"></div></div>
-            <div class="sk-tags"><span class="sk-tag">Linux</span><span class="sk-tag">Cisco</span><span class="sk-tag">Routing</span><span class="sk-tag">Firewalls</span><span class="sk-tag">NDG</span></div>
-          </div>
-          <div class="sk">
-            <div class="sk-header"><span class="sk-name">Mobile Development</span><span class="sk-pct">75%</span></div>
-            <div class="sk-track"><div class="sk-fill" style="width:75%"></div></div>
-            <div class="sk-tags"><span class="sk-tag">Android</span><span class="sk-tag">Flutter</span><span class="sk-tag">Cross-platform</span></div>
-          </div>
-          <div class="sk">
-            <div class="sk-header"><span class="sk-name">Data Analysis</span><span class="sk-pct">75%</span></div>
-            <div class="sk-track"><div class="sk-fill" style="width:75%"></div></div>
-            <div class="sk-tags"><span class="sk-tag">Python</span><span class="sk-tag">Statistics</span><span class="sk-tag">Visualization</span></div>
-          </div>
-          <div class="sk">
-            <div class="sk-header"><span class="sk-name">Computer Maintenance</span><span class="sk-pct">70%</span></div>
-            <div class="sk-track"><div class="sk-fill" style="width:70%"></div></div>
-            <div class="sk-tags"><span class="sk-tag">Hardware</span><span class="sk-tag">Diagnostics</span><span class="sk-tag">Repair</span></div>
-          </div>
-        </div>
-
-        <div class="badge-row fu">
-          <img src="https://samglish.github.io/CV/assets/img/baget3.png" alt="Cisco Badge">
-        </div>
-      </div>
-    </section>
-<!-- RESUME -->
-<section id="resume">
-
-  <div class="s-inner">
-
-    <div class="s-label">03 — Resume</div>
-    <h2 class="s-title">Education & Experience</h2>
-
-    <div class="resume-cols">
-
-      <!-- EDUCATION -->
-      <div class="res-col fu">
-
-        <h3>// Academic Background</h3>
-
-        <div class="tl">
-
-          <div class="tl-item">
-            <div class="tl-date">2026</div>
-            <div class="tl-title">
-              PhD in Information Technology
-            </div>
-            <div class="tl-org">
-              Modibbo Adama University, Nigeria
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2022 – 2024</div>
-            <div class="tl-title">
-              Master's Degree — Network & Systems Engineering
-            </div>
-            <div class="tl-org">
-              University of Maroua
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2021 – 2022</div>
-            <div class="tl-title">
-              Master I — Computer Science
-            </div>
-            <div class="tl-org">
-              University of Maroua
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2020 – 2021</div>
-            <div class="tl-title">
-              Bachelor's Degree — Computer Science
-            </div>
-            <div class="tl-org">
-              University of Maroua
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2017 – 2018</div>
-            <div class="tl-title">
-              Baccalauréat D — Mathematics & Earth Sciences
-            </div>
-            <div class="tl-org">
-              Lycée de Domayo, Maroua
-            </div>
-          </div>
-
-        </div>
-
-        <!-- CERTIFICATIONS -->
-        <h3 style="margin-top:2rem;">// Licenses & Certifications</h3>
-
-        <div class="tl">
-
-          <div class="tl-item">
-            <div class="tl-date">May 2026</div>
-            <div class="tl-title">
-              How to Provide Initial Support to Survivors of Gender-Based Violence (GBV)
-            </div>
-            <div class="tl-org">
-              UNICEF
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">April 2026</div>
-            <div class="tl-title">
-              Campus Directors 2026
-            </div>
-            <div class="tl-org">
-              Hult Prize Foundation
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">March 2022</div>
-            <div class="tl-title">
-              Fortinet Network Security Expert (NSE)
-            </div>
-            <div class="tl-org">
-              Cisco Networking Academy
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">January 2021</div>
-            <div class="tl-title">
-              Linux Essentials Certification
-            </div>
-            <div class="tl-org">
-              Cisco Networking Academy
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- EXPERIENCE -->
-      <div class="res-col fu">
-
-        <h3>// Professional Experience</h3>
-
-        <div class="tl">
-
-          <div class="tl-item">
-            <div class="tl-date">2025 – Present</div>
-            <div class="tl-title">
-              Campus Director — Hult Prize Foundation
-            </div>
-            <div class="tl-org">
-              University of Maroua
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2025 – Present</div>
-            <div class="tl-title">
-              Computer Science Tutor
-            </div>
-            <div class="tl-org">
-              Preply (Remote)
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2024 – Present</div>
-            <div class="tl-title">
-              Teaching Assistant (Monitor)
-            </div>
-            <div class="tl-org">
-              National Higher Polytechnic School of Maroua (ENSPM)
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2023 – 2024</div>
-            <div class="tl-title">
-              IT Staff — Faculty of Science Computing Unit
-            </div>
-            <div class="tl-org">
-              University of Maroua
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2023 – 2024</div>
-            <div class="tl-title">
-              Professional Supervisor & Technical Trainer
-            </div>
-            <div class="tl-org">
-              Zen Concept, Maroua
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2022 – 2023</div>
-            <div class="tl-title">
-              Trainer — Office Tools, LaTeX, Java & Computer Maintenance
-            </div>
-            <div class="tl-org">
-              ACUMA, Maroua
-            </div>
-          </div>
-
-          <div class="tl-item">
-            <div class="tl-date">2018 – 2019</div>
-            <div class="tl-title">
-              Sales Representative
-            </div>
-            <div class="tl-org">
-              MTN Cameroon, Maroua
-            </div>
-          </div>
-
-        </div>
-
-        <!-- RESEARCH -->
-        <h3 style="margin-top:2rem;">// Research Focus</h3>
-
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:.75rem;">
-          <span class="tag">Machine Learning</span>
-          <span class="tag">Cybersecurity</span>
-          <span class="tag">Zero-Day Detection</span>
-          <span class="tag">Network Security</span>
-          <span class="tag">Artificial Intelligence</span>
-        </div>
-
-        <!-- SKILLS -->
-        <h3 style="margin-top:2rem;">// Technical Skills</h3>
-
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:.75rem;">
-          <span class="tag">Python</span>
-          <span class="tag">Linux</span>
-          <span class="tag">Networking</span>
-          <span class="tag">System Administration</span>
-          <span class="tag">Web Development</span>
-          <span class="tag">Cybersecurity</span>
-          <span class="tag">Data Analysis</span>
-          <span class="tag">Machine Learning</span>
-        </div>
-
-        <!-- LANGUAGES -->
-        <h3 style="margin-top:2rem;">// Languages</h3>
-
-        <div style="display:flex;gap:8px;margin-top:.75rem;">
-          <span class="tag">English</span>
-          <span class="tag">French</span>
-        </div>
-
-      </div>
-
     </div>
   </div>
-
 </section>
-    <!-- PORTFOLIO -->
-    <section id="portfolio">
-      <div class="s-inner">
-        <div class="s-label">04 — Posts</div>
-        <h2 class="s-title">My Posts</h2>
-        <div class="posts-grid fu">
-          <div class="post-card">
-            <img src="https://samglish.github.io/CV/assets/img/portfolio/wadjo.png" alt="Wadjo startup">
-            <div class="post-overlay">
-              <div class="post-title">Wadjo — My Startup</div>
-              <div class="post-cat">Organization</div>
-            </div>
-          </div>
-          <div class="post-card">
-            <img src="https://samglish.github.io/CV/assets/img/portfolio/glish1.jpg" alt="Hackathon 2024">
-            <div class="post-overlay">
-              <div class="post-title">Hackathon 2024</div>
-              <div class="post-cat">Event</div>
-            </div>
-          </div>
-          <div class="post-card">
-            <img src="https://samglish.github.io/CV/assets/img/portfolio/Vr.jpg" alt="VR by Wadjonautes">
-            <div class="post-overlay">
-              <div class="post-title">VR — By Wadjonautes</div>
-              <div class="post-cat">My Apps</div>
-            </div>
-          </div>
-        </div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="s-header reveal">
+      <div class="s-eyebrow">
+        <span class="lang-fr">À propos</span>
+        <span class="lang-en">About</span>
       </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services">
-      <div class="s-inner">
-        <div class="s-label">05 — Services</div>
-        <h2 class="s-title">What I Offer</h2>
-        <div class="srv-grid fu">
-          <div class="srv">
-            <div class="srv-num">01</div>
-            <div class="srv-title">Penetration Testing</div>
-            <p class="srv-desc">// Full-scope ethical hacking — web, network, mobile. Metasploit, OSINT, CVE exploitation. Detailed reports with remediation.</p>
-          </div>
-          <div class="srv">
-            <div class="srv-num">02</div>
-            <div class="srv-title">Web Development</div>
-            <p class="srv-desc">// Secure, performant web apps. Full-stack PHP/Laravel, REST APIs, modern frontends. From MVP to production.</p>
-          </div>
-          <div class="srv">
-            <div class="srv-num">03</div>
-            <div class="srv-title">Mobile Development</div>
-            <p class="srv-desc">// Android &amp; cross-platform apps built security-first. Clean UI, fast performance, production-ready code.</p>
-          </div>
-          <div class="srv">
-            <div class="srv-num">04</div>
-            <div class="srv-title">Security Audit</div>
-            <p class="srv-desc">// Infrastructure vulnerability assessment, risk analysis, threat modeling, compliance and hardening recommendations.</p>
-          </div>
-          <div class="srv">
-            <div class="srv-num">05</div>
-            <div class="srv-title">Training &amp; Teaching</div>
-            <p class="srv-desc">// Cybersecurity bootcamps, Linux workshops, Java &amp; web programming. Beginner to advanced audiences.</p>
-          </div>
-          <div class="srv">
-            <div class="srv-num">06</div>
-            <div class="srv-title">Network Administration</div>
-            <p class="srv-desc">// Cisco network design, firewall config, monitoring and systems administration for any scale.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <div class="s-inner">
-        <div class="s-label">06 — Contact</div>
-        <h2 class="s-title">Get in Touch</h2>
-        <div class="contact-grid fu">
-          <div>
-            <p class="contact-desc">Open to freelance missions, consulting, collaborations and speaking opportunities. I usually respond within 24 hours.</p>
-            <div class="c-links">
-              <a href="mailto:beidisamuel11@gmail.com" class="c-link">
-                <div class="c-icon">@</div>beidisamuel11@gmail.com
-              </a>
-              <a href="https://wa.me/+2348104094880" class="c-link">
-                <div class="c-icon">W</div>+234 810 409 4880
-              </a>
-              <a href="tel:+237620601651" class="c-link">
-                <div class="c-icon">☎</div>+237 620 601 651
-              </a>
-              <a href="https://linkedin.com/in/beididinasamuel" class="c-link">
-                <div class="c-icon">in</div>linkedin.com/in/beididinasamuel
-              </a>
-              <a href="https://github.com/samglish" class="c-link">
-                <div class="c-icon">gh</div>github.com/samglish
-              </a>
-            </div>
-          </div>
-
-          <form class="cf" action="forms/contact.php" method="post">
-            <div class="fg">
-              <label>// Your Name</label>
-              <input type="text" name="name" required>
-            </div>
-            <div class="fg">
-              <label>// Your Email</label>
-              <input type="email" name="email" required>
-            </div>
-            <div class="fg">
-              <label>// Subject</label>
-              <input type="text" name="subject" required>
-            </div>
-            <div class="fg">
-              <label>// Message</label>
-              <textarea name="message" required></textarea>
-            </div>
-            <button type="submit" class="cf-submit">Send Message →</button>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <footer id="footer">
-      <p>© 2024 Beidi Dina Samuel · Samglish Inc</p>
-    </footer>
+      <h2 class="s-title">
+        <span class="lang-fr">Présentation</span>
+        <span class="lang-en">Profile</span>
+      </h2>
+    </div>
+    <p class="research-lede reveal" style="max-width:900px;">
+      <span class="lang-fr">
+        Doctorant en Informatique, ma recherche porte sur l'apprentissage automatique pour la détection des vulnérabilités zero-day. Passionné par la cybersécurité, l'intelligence artificielle et les technologies émergentes, mon parcours académique et professionnel combine expertise technique, recherche, enseignement et leadership, avec une expérience en administration réseau et systèmes, cybersécurité, développement web/mobile et analyse de données.<br><br>
+        Mes travaux de recherche actuels visent à exploiter les techniques d'apprentissage automatique pour améliorer la détection et la prédiction des vulnérabilités zero-day, contribuant ainsi au développement de solutions de cybersécurité plus intelligentes et proactives.<br><br>
+        Tout au long de mon parcours, j'ai exercé en tant qu'assistant d'enseignement universitaire et formateur professionnel en maintenance informatique et technologies numériques. J'ai également contribué au développement de plusieurs projets numériques et plateformes collaboratives, alliant innovation et résolution pratique de problèmes.<br><br>
+        Au-delà de la recherche, je suis activement engagé dans l'entrepreneuriat et le leadership étudiant en tant que Directeur de campus du Hult Prize à l'Université de Maroua, où j'accompagne les étudiants dans le développement de projets innovants et à impact.<br><br>
+        Curieux, adaptable et orienté résultats, je m'intéresse particulièrement à la cybersécurité, à l'apprentissage automatique, aux infrastructures intelligentes et aux solutions basées sur l'IA conçues pour répondre aux défis technologiques actuels.
+      </span>
+      <span class="lang-en">
+        PhD student in Computer Science with a research focus on Machine Learning for Zero-Day Vulnerability Detection, I am passionate about cybersecurity, artificial intelligence, and emerging technologies. My academic and professional journey combines technical expertise, research, teaching, and leadership, with experience in network and systems administration, cybersecurity, web/mobile development, and data analysis.<br><br>
+        My current research focuses on leveraging machine learning techniques to improve the detection and prediction of zero-day vulnerabilities, contributing to the development of more intelligent and proactive cybersecurity solutions.<br><br>
+        Throughout my career, I have served as a university teaching assistant and professional trainer in computer maintenance and digital technologies. I have also contributed to the development of several digital projects and collaborative platforms, combining innovation with practical problem-solving.<br><br>
+        Beyond research, I am actively involved in entrepreneurship and student leadership as Campus Director of the Hult Prize at the University of Maroua, where I support students in innovation and impact-driven project development.<br><br>
+        Curious, adaptable, and results-oriented, I am particularly interested in cybersecurity, machine learning, intelligent infrastructures, and AI-driven solutions designed to address modern technological challenges.
+      </span>
+    </p>
   </div>
+</section>
 
-  <script>
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav a');
+<!-- EDUCATION -->
+<section id="education">
+  <div class="wrap">
+    <div class="s-header reveal">
+      <div class="s-eyebrow">
+        <span class="lang-fr">Formation</span>
+        <span class="lang-en">Education</span>
+      </div>
+      <h2 class="s-title">
+        <span class="lang-fr">Parcours académique</span>
+        <span class="lang-en">Academic Background</span>
+      </h2>
+    </div>
 
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(s => {
-        if (window.scrollY >= s.offsetTop - 140) current = s.id;
-      });
-      navLinks.forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-      });
-    }, { passive: true });
+    <div class="edu-timeline reveal">
+      <div class="edu-item">
+        <div class="edu-date">2026 — Present</div>
+        <div class="edu-degree">
+          <span class="lang-fr">Doctorat en Informatique (Ph.D Candidate)</span>
+          <span class="lang-en">PhD Candidate in Computer Science</span>
+        </div>
+        <div class="edu-school">Modibbo Adama University, Nigeria</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-date">2022 — 2024</div>
+        <div class="edu-degree">
+          <span class="lang-fr">Master — Ingénierie des Réseaux et Systèmes</span>
+          <span class="lang-en">Master's Degree — Network &amp; Systems Engineering</span>
+        </div>
+        <div class="edu-school">
+          <span class="lang-fr">Université de Maroua, Cameroun</span>
+          <span class="lang-en">University of Maroua, Cameroon</span>
+        </div>
+        <div class="edu-school" style="margin-top:6px;line-height:1.6;">
+          <span class="lang-fr">Mémoire : Système IoT et multi-agents pour le monitoring et le suivi des patients asthmatiques du 3<sup>e</sup> âge.</span>
+          <span class="lang-en">Thesis: IoT and multi-agent system for monitoring and follow-up of elderly asthmatic patients.</span>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-date">2021 — 2022</div>
+        <div class="edu-degree">
+          <span class="lang-fr">Master I — Informatique</span>
+          <span class="lang-en">Master I — Computer Science</span>
+        </div>
+        <div class="edu-school">
+          <span class="lang-fr">Université de Maroua, Cameroun</span>
+          <span class="lang-en">University of Maroua, Cameroon</span>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-date">2020 — 2021</div>
+        <div class="edu-degree">
+          <span class="lang-fr">Licence — Informatique</span>
+          <span class="lang-en">Bachelor's Degree — Computer Science</span>
+        </div>
+        <div class="edu-school">
+          <span class="lang-fr">Université de Maroua, Cameroun</span>
+          <span class="lang-en">University of Maroua, Cameroon</span>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-date">2017 — 2018</div>
+        <div class="edu-degree">
+          <span class="lang-fr">Baccalauréat D — Mathématiques &amp; Sciences de la Terre</span>
+          <span class="lang-en">Baccalauréat D — Mathematics &amp; Earth Sciences</span>
+        </div>
+        <div class="edu-school">
+          <span class="lang-fr">Lycée de Domayo, Maroua, Cameroun</span>
+          <span class="lang-en">Lycée de Domayo, Maroua, Cameroon</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+<!-- RESEARCH -->
+<section id="research">
+  <div class="wrap">
+    <div class="s-header reveal">
+      <div class="s-eyebrow">
+        <span class="lang-fr">Recherche</span>
+        <span class="lang-en">Research</span>
+      </div>
+      <h2 class="s-title">
+        <span class="lang-fr">Centres d'intérêt</span>
+        <span class="lang-en">Research Interests</span>
+      </h2>
+    </div>
 
-    navLinks.forEach(a => {
-      a.addEventListener('click', () => document.getElementById('sidebar').classList.remove('open'));
-    });
-  </script>
+    <p class="research-lede reveal">
+      <span class="lang-fr">Mon travail se situe à l'intersection de l'intelligence artificielle, de la cybersécurité et des systèmes distribués. Je m'intéresse particulièrement à la conception de solutions d'apprentissage automatique adaptatives, respectueuses de la vie privée et efficaces en ressources pour les infrastructures critiques — avec un focus sur l'IoT santé dans les environnements à ressources limitées en Afrique de l'Ouest.</span>
+      <span class="lang-en">My work sits at the intersection of artificial intelligence, cybersecurity, and distributed systems. I am particularly interested in building adaptive, privacy-preserving, and resource-efficient machine learning solutions for real-world critical infrastructure — with a focus on healthcare IoT in resource-constrained environments across West Africa.</span>
+    </p>
+
+    <div class="research-grid reveal">
+      <div class="r-card">
+        <div class="r-card-num">01</div>
+        <div class="r-card-title">Machine Learning</div>
+        <div class="r-card-desc">
+          <span class="lang-fr">Apprentissage supervisé et non supervisé, méthodes ensemblistes, détection d'anomalies et analyses prédictives. Application d'Isolation Forest, One-Class SVM, MLP, BiLSTM et mécanismes d'attention aux données de sécurité et de santé.</span>
+          <span class="lang-en">Supervised and unsupervised learning, ensemble methods, anomaly detection, and predictive analytics. Application of Isolation Forest, One-Class SVM, MLP, BiLSTM, and attention mechanisms to security and healthcare data.</span>
+        </div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-num">02</div>
+        <div class="r-card-title">
+          <span class="lang-fr">Cybersécurité</span>
+          <span class="lang-en">Cybersecurity</span>
+        </div>
+        <div class="r-card-desc">
+          <span class="lang-fr">Détection et atténuation des attaques zero-day, systèmes de détection d'intrusion (IDS), renseignement sur les menaces et stratégies de défense proactive pour les architectures IoT-Edge-Cloud dans les systèmes critiques.</span>
+          <span class="lang-en">Zero-day attack detection and mitigation, intrusion detection systems (IDS), threat intelligence, and proactive defence strategies for IoT-Edge-Cloud architectures in critical systems.</span>
+        </div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-num">03</div>
+        <div class="r-card-title">
+          <span class="lang-fr">Intelligence Artificielle</span>
+          <span class="lang-en">Artificial Intelligence</span>
+        </div>
+        <div class="r-card-desc">
+          <span class="lang-fr">Deep learning, deep reinforcement learning (DQN), IA explicable (XAI) et agents IA adaptatifs qui apprennent des politiques optimales pour des environnements dynamiques et contraints en ressources.</span>
+          <span class="lang-en">Deep learning, deep reinforcement learning (DQN), explainable AI (XAI), and adaptive AI agents that learn optimal policies for dynamic, resource-constrained environments.</span>
+        </div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-num">04</div>
+        <div class="r-card-title">
+          <span class="lang-fr">Apprentissage Fédéré &amp; Distribué</span>
+          <span class="lang-en">Federated &amp; Distributed Learning</span>
+        </div>
+        <div class="r-card-desc">
+          <span class="lang-fr">Entraînement collaboratif de modèles préservant la confidentialité à travers des nœuds distribués en utilisant FedProx, la confidentialité différentielle et l'agrégation sécurisée — en gardant les données sensibles locales tout en permettant une intelligence globale.</span>
+          <span class="lang-en">Privacy-preserving collaborative model training across distributed nodes using FedProx, differential privacy, and secure aggregation — keeping sensitive data local while enabling global intelligence.</span>
+        </div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-num">05</div>
+        <div class="r-card-title">
+          <span class="lang-fr">Réseaux Informatiques</span>
+          <span class="lang-en">Computer Networks</span>
+        </div>
+        <div class="r-card-desc">
+          <span class="lang-fr">Protocoles de sécurité réseau, réseaux définis par logiciel (SDN), analyse de trafic et conception d'architectures résilientes pour les déploiements hybrides IoT-Edge-Cloud.</span>
+          <span class="lang-en">Network security protocols, software-defined networking, traffic analysis, and the design of resilient network architectures for hybrid IoT-Edge-Cloud deployments.</span>
+        </div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-num">06</div>
+        <div class="r-card-title">
+          <span class="lang-fr">IoT Santé</span>
+          <span class="lang-en">Healthcare IoT</span>
+        </div>
+        <div class="r-card-desc">
+          <span class="lang-fr">Écosystèmes IoT sécurisés et intelligents pour la télésurveillance médicale, la télémédecine et la protection des données de santé — adaptés aux contraintes de connectivité et d'énergie des établissements de santé africains.</span>
+          <span class="lang-en">Secure and intelligent IoT ecosystems for remote patient monitoring, telemedicine, and medical data protection — tailored to the connectivity and power constraints of African healthcare facilities.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pub-box reveal">
+      <div class="pub-box-title">
+        <span class="lang-fr">Publications &amp; Travail de Thèse</span>
+        <span class="lang-en">Publications &amp; Dissertation Work</span>
+      </div>
+      <p class="pub-box-desc">
+        <span class="lang-fr">Thèse de doctorat en cours : « Atténuation proactive et adaptative des cyberattaques zero-day dans les systèmes critiques hybrides IoT-Edge-Cloud » — Modibbo Adama University, 2026. Les articles évalués par les pairs et les actes de conférence seront listés ici au fur et à mesure de leur publication.</span>
+        <span class="lang-en">Doctoral thesis in progress: "Proactive and Adaptive Mitigation of Zero-Day Cyberattacks in Hybrid IoT-Edge-Cloud Critical Systems" — Modibbo Adama University, 2026. Peer-reviewed papers and conference proceedings will be listed here as they are completed and published.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section id="teaching">
+  <div class="wrap">
+    <div class="s-header reveal">
+      <div class="s-eyebrow">
+        <span class="lang-fr">Enseignement</span>
+        <span class="lang-en">Teaching</span>
+      </div>
+      <h2 class="s-title">
+        <span class="lang-fr">Expérience d'enseignement</span>
+        <span class="lang-en">Teaching Experience</span>
+      </h2>
+    </div>
+
+    <div class="teaching-table-wrap reveal">
+      <table class="teaching-table">
+        <thead>
+          <tr>
+            <th>
+              <span class="lang-fr">Période</span>
+              <span class="lang-en">Period</span>
+            </th>
+            <th>
+              <span class="lang-fr">Poste</span>
+              <span class="lang-en">Position</span>
+            </th>
+            <th>
+              <span class="lang-fr">Établissement</span>
+              <span class="lang-en">Institution</span>
+            </th>
+            <th>
+              <span class="lang-fr">Format</span>
+              <span class="lang-en">Format</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="inst-row">
+            <td colspan="4">ENSPM</td>
+          </tr>
+          <tr>
+            <td>2024 – Present</td>
+            <td>
+              <span class="lang-fr">Assistant d'enseignement (Moniteur)</span>
+              <span class="lang-en">Teaching Assistant (Graduate assistant)</span>
+            </td>
+            <td>ENSPM</td>
+            <td><span class="lvl">Cours, TD &amp; TP</span></td>
+          </tr>
+          <tr class="inst-row">
+            <td colspan="4">
+              <span class="lang-fr">Faculté des Sciences — Université de Maroua (FS-UMa)</span>
+              <span class="lang-en">Faculty of Sciences — University of Maroua (FS-UMa)</span>
+            </td>
+          </tr>
+          <tr>
+            <td>2023 – 2024</td>
+            <td>
+              <span class="lang-fr">Moniteur — Cellule informatique - UMa</span>
+              <span class="lang-en">Graduate Assistant — IT Unit - UMa</span>
+            </td>
+            <td>FS-UMa</td>
+            <td>
+              <span class="lvl">
+                <span class="lang-fr">Support technique &amp; assistance</span>
+                <span class="lang-en">Technical Support &amp; Assistance</span>
+              </span>
+            </td>
+          </tr>
+          <tr class="inst-row">
+            <td colspan="4">Preply (Remote)</td>
+          </tr>
+          <tr>
+            <td>2025 – Present</td>
+            <td>
+              <span class="lang-fr">Tuteur en Informatique</span>
+              <span class="lang-en">Computer Science Tutor</span>
+            </td>
+            <td>Preply</td>
+            <td>
+              <span class="lvl">
+                <span class="lang-fr">Tutorat en ligne</span>
+                <span class="lang-en">Online Tutoring</span>
+              </span>
+            </td>
+          </tr>
+          <tr class="inst-row">
+            <td colspan="4">Zen Concept, Maroua</td>
+          </tr>
+          <tr>
+            <td>2023 – 2024</td>
+            <td>
+              <span class="lang-fr">Superviseur professionnel &amp; Formateur technique</span>
+              <span class="lang-en">Professional Supervisor &amp; Technical Trainer</span>
+            </td>
+            <td>Zen Concept</td>
+            <td>
+              <span class="lvl">
+                <span class="lang-fr">Formation appliquée</span>
+                <span class="lang-en">Applied Training</span>
+              </span>
+            </td>
+          </tr>
+          <tr class="inst-row">
+            <td colspan="4">ACUMA, Maroua</td>
+          </tr>
+          <tr>
+            <td>2022 – 2023</td>
+            <td>
+              <span class="lang-fr">Formateur — Informatique</span>
+              <span class="lang-en">Trainer — IT</span>
+            </td>
+            <td>ACUMA</td>
+            <td>
+              <span class="lvl">
+                <span class="lang-fr">Formation appliquée</span>
+                <span class="lang-en">Applied Training</span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-header reveal" style="margin-top:2.5rem;margin-bottom:1.25rem;">
+      <h3 style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);">
+        <span class="lang-fr">Cours dispensés à l'ENSPM</span>
+        <span class="lang-en">Courses Taught at ENSPM</span>
+      </h3>
+    </div>
+    <div class="teaching-table-wrap reveal">
+      <table class="teaching-table">
+        <thead>
+          <tr>
+            <th>
+              <span class="lang-fr">Cours</span>
+              <span class="lang-en">Course</span>
+            </th>
+            <th>
+              <span class="lang-fr">Niveau</span>
+              <span class="lang-en">Level</span>
+            </th>
+            <th>
+              <span class="lang-fr">Filière</span>
+              <span class="lang-en">Track</span>
+            </th>
+            <th>
+              <span class="lang-fr">Établissement</span>
+              <span class="lang-en">Institution</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td><span class="lang-fr">Médias sociaux</span><span class="lang-en">Social Media</span></td>
+        <td>1</td>
+        <td>IAN / IHN</td>
+        <td>ENSPM</td>
+        </tr>
+        <tr>
+        <td><span class="lang-fr">L'éthique à l'ère numérique</span><span class="lang-en">Ethics in the Digital Age</span></td>
+        <td>2</td>
+        <td>IHN</td>
+        <td>ENSPM</td>
+        </tr>
+        <tr>
+        <td><span class="lang-fr">Analyse de la valeur et Ingénierie de l'innovation</span><span class="lang-en">Value Analysis and Innovation Engineering</span></td>
+        <td>3</td>
+        <td>IAN / IHN</td>
+        <td>ENSPM</td>
+        </tr>
+        <tr>
+        <td><span class="lang-fr">Interactions humain-machine et ergonomie</span><span class="lang-en">Human-Machine Interaction and Ergonomics</span></td>
+        <td>3</td>
+        <td>IHN</td>
+        <td>ENSPM</td>
+        </tr>
+        <tr>
+        <td><span class="lang-fr">Structures de données</span><span class="lang-en">Data Structures</span></td>
+        <td>2</td>
+        <td>IAN/IHN</td>
+        <td>ENSPM</td>
+        </tr>
+        <tr>
+        <td><span class="lang-fr">Sémiologie graphique</span><span class="lang-en">Graphic Semiology</span></td>
+        <td>3</td>
+        <td>IHN</td>
+        <td>ENSPM</td>
+        </tr>
+        <tr>
+        <td><span class="lang-fr">Intelligence artificielle et interaction humain-machine</span><span class="lang-en">Artificial Intelligence and Human-Machine Interaction</span></td>
+        <td>5</td>
+        <td>IHN</td>
+        <td>ENSPM</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SUPERVISION -->
+<section id="supervision">
+  <div class="wrap">
+    <div class="s-header reveal">
+      <div class="s-eyebrow">
+        <span class="lang-fr">Encadrement</span>
+        <span class="lang-en">Supervision</span>
+      </div>
+      <h2 class="s-title">
+        <span class="lang-fr">Encadrement d'étudiants</span>
+        <span class="lang-en">Student Supervision</span>
+      </h2>
+    </div>
+
+    <div class="ledger-wrap reveal">
+      <table class="ledger">
+        <thead>
+          <tr>
+            <th>
+              <span class="lang-fr">Diplôme</span>
+              <span class="lang-en">Degree</span>
+            </th>
+            <th>
+              <span class="lang-fr">Étudiant</span>
+              <span class="lang-en">Student</span>
+            </th>
+            <th>
+              <span class="lang-fr">Période</span>
+              <span class="lang-en">Period</span>
+            </th>
+            <th>
+              <span class="lang-fr">Rôle</span>
+              <span class="lang-en">Role</span>
+            </th>
+            <th>
+              <span class="lang-fr">Statut</span>
+              <span class="lang-en">Status</span>
+            </th>
+            <th>
+              <span class="lang-fr">Sujet de recherche</span>
+              <span class="lang-en">Research Topic</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-degree">
+              <span class="lang-fr">Licence — Arts et Humanités Numériques</span>
+              <span class="lang-en">Bachelor's — Digital Arts &amp; Humanities</span>
+            </td>
+            <td class="col-student">
+              YASSIKA EDMOND IAN
+              <span class="sub">ENSPM — Arts et Humanités Numériques</span>
+            </td>
+            <td class="col-period">2025 – Present</td>
+            <td class="col-role">
+              <span class="lang-fr">Directeur de mémoire</span>
+              <span class="lang-en">Thesis Supervisor</span>
+            </td>
+            <td><span class="status-pill"><span class="dot"></span>
+              <span class="lang-fr">En cours</span>
+              <span class="lang-en">Ongoing</span>
+            </span></td>
+            <td class="col-topic">
+              <span class="lang-fr">Conception et mise en œuvre d'une chaîne audiovisuelle numérique pour la gestion et la transmission des connaissances entrepreneuriales : application à la promotion des entreprises et Start-ups locales. Cas de l'incubateur d'entreprise de l'ENSPM.</span>
+              <span class="lang-en">Design and implementation of a digital audiovisual chain for the management and transmission of entrepreneurial knowledge: application to the promotion of local businesses and start-ups. Case of the ENSPM business incubator.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- AFFILIATIONS & SERVICE -->
+<section id="affiliations">
+  <div class="wrap">
+    <div class="s-header reveal">
+      <div class="s-eyebrow">
+        <span class="lang-fr">Affiliations &amp; Services</span>
+        <span class="lang-en">Affiliations &amp; Service</span>
+      </div>
+      <h2 class="s-title">
+        <span class="lang-fr">Affiliations professionnelles, certifications &amp; services</span>
+        <span class="lang-en">Professional Affiliations, Certifications &amp; Service</span>
+      </h2>
+    </div>
+
+    <div class="aff-grid reveal">
+      <div class="aff-col">
+        <h3>
+          <span class="lang-fr">Affiliations &amp; Rôles</span>
+          <span class="lang-en">Affiliations &amp; Roles</span>
+        </h3>
+        <div class="aff-item">
+          <div class="aff-date">2025 – Present</div>
+          <div class="aff-title">
+            <span class="lang-fr">Directeur de campus</span>
+            <span class="lang-en">Campus Director</span>
+          </div>
+          <div class="aff-org">
+            <span class="lang-fr">Hult Prize Foundation, Université de Maroua</span>
+            <span class="lang-en">Hult Prize Foundation, University of Maroua</span>
+          </div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">2023 – 2024</div>
+          <div class="aff-title">
+            <span class="lang-fr">Personnel informatique — Cellule informatique de la Faculté des Sciences</span>
+            <span class="lang-en">IT Staff — Faculty of Science Computing Unit</span>
+          </div>
+          <div class="aff-org">
+            <span class="lang-fr">Université de Maroua</span>
+            <span class="lang-en">University of Maroua</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="aff-col">
+        <h3>
+          <span class="lang-fr">Licences &amp; Certifications</span>
+          <span class="lang-en">Licenses &amp; Certifications</span>
+        </h3>
+        <div class="aff-item">
+          <div class="aff-date">Jun 2026</div>
+          <div class="aff-title">Docker Foundations Professional Certificate</div>
+          <div class="aff-org">Docker, Inc — Skills: Containerization, Docker Products</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">Jun 2026</div>
+          <div class="aff-title">AWS Certified AI Practitioner (AIF-C01) Exam Prep</div>
+          <div class="aff-org">LinkedIn — Skills: Amazon Web Services (AWS), Generative AI</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">Jun 2026</div>
+          <div class="aff-title">Microsoft Security Essentials: Concepts, Solutions, and AI-Powered Protection</div>
+          <div class="aff-org">Microsoft — Skills: XDR, GRC, +8 skills</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">Jun 2026</div>
+          <div class="aff-title">Prepare Your Career in Cybersecurity</div>
+          <div class="aff-org">LinkedIn — Skills: Threat &amp; Vulnerability Management, Risk Management</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">Jun 2026</div>
+          <div class="aff-title">Machine Learning with Python</div>
+          <div class="aff-org">IBM — Skills: Machine Learning, Pandas, +7 skills</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">Jun 2026</div>
+          <div class="aff-title">Preply Tutors Academy Certificate — Teaching Methodology</div>
+          <div class="aff-org">Preply — Skills: Lesson Planning, Learner Engagement</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">May 2026</div>
+          <div class="aff-title">How to Provide Initial Support to Survivors of Gender-Based Violence (GBV)</div>
+          <div class="aff-org">UNICEF — Skills: Humanitarian Response, Protection Measures</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">Apr 2026</div>
+          <div class="aff-title">Campus Directors 2026</div>
+          <div class="aff-org">Hult Prize Foundation</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">Mar 2022</div>
+          <div class="aff-title">Fortinet Network Security Expert (NSE)</div>
+          <div class="aff-org">Cisco Networking Academy — Skills: Security</div>
+        </div>
+        <div class="aff-item">
+          <div class="aff-date">Jan 2021</div>
+          <div class="aff-title">Linux Essentials Certification</div>
+          <div class="aff-org">Cisco Networking Academy — Skills: System Administration</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="s-header reveal">
+      <div class="s-eyebrow">
+        <span class="lang-fr">Contact</span>
+        <span class="lang-en">Contact</span>
+      </div>
+      <h2 class="s-title">
+        <span class="lang-fr">Me contacter</span>
+        <span class="lang-en">Get in Touch</span>
+      </h2>
+    </div>
+
+    <div class="contact-card reveal">
+      <div class="contact-left">
+        <div>
+          <h3 class="contact-title">
+            <span class="lang-fr">Restons en contact</span>
+            <span class="lang-en">Let's connect</span>
+          </h3>
+          <p class="contact-desc">
+            <span class="lang-fr">Ouvert aux collaborations académiques, aux demandes d'encadrement d'étudiants, ainsi qu'aux opportunités de conférences et de formation. Je réponds généralement sous quelques jours.</span>
+            <span class="lang-en">Open to academic collaboration, student supervision inquiries, and speaking or training opportunities. I usually respond within a few days.</span>
+          </p>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:beidisamuel11@gmail.com" class="c-row">
+            <div class="c-icon">@</div>
+            <div class="c-text">beidisamuel11@gmail.com<small>
+              <span class="lang-fr">E-mail principal</span>
+              <span class="lang-en">Primary email</span>
+            </small></div>
+          </a>
+          <a href="https://wa.me/+2348104094880" class="c-row">
+            <div class="c-icon">W</div>
+            <div class="c-text">+234 810 409 4880<small>WhatsApp</small></div>
+          </a>
+          <a href="tel:+237620601651" class="c-row">
+            <div class="c-icon">☎</div>
+            <div class="c-text">+237 620 601 651<small>
+              <span class="lang-fr">Téléphone</span>
+              <span class="lang-en">Phone</span>
+            </small></div>
+          </a>
+          <a href="https://linkedin.com/in/beididinasamuel" class="c-row">
+            <div class="c-icon">in</div>
+            <div class="c-text">linkedin.com/in/beididinasamuel<small>LinkedIn</small></div>
+          </a>
+          <a href="https://github.com/samglish" class="c-row">
+            <div class="c-icon">gh</div>
+            <div class="c-text">github.com/samglish<small>GitHub</small></div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-right">
+        <h4>
+          <span class="lang-fr">Affiliation</span>
+          <span class="lang-en">Affiliation</span>
+        </h4>
+        <p>
+          <span class="lang-fr">École Nationale Supérieure Polytechnique de Maroua (ENSPM)<br>Université de Maroua, Cameroun</span>
+          <span class="lang-en">National Higher Polytechnic School of Maroua (ENSPM)<br>University of Maroua, Cameroon</span>
+        </p>
+
+        <h4>
+          <span class="lang-fr">Réseaux sociaux</span>
+          <span class="lang-en">Social Media</span>
+        </h4>
+        <div class="social-row">
+          <a href="https://twitter.com/BeidiSamuel" class="social-chip">Twitter / X</a>
+          <a href="https://instagram.com/beidi_dina_samuel" class="social-chip">Instagram</a>
+          <a href="https://web.facebook.com/profile.php?id=100007165625739" class="social-chip">Facebook</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Beidi Dina Samuel — ENSPM · 
+      <span class="lang-fr">Université de Maroua</span>
+      <span class="lang-en">University of Maroua</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* Language toggle */
+  const langToggle = document.getElementById('langToggle');
+  const body = document.body;
+  langToggle.addEventListener('click', () => {
+    const isFr = body.classList.contains('lang-fr');
+    if (isFr) {
+      body.classList.remove('lang-fr');
+      body.classList.add('lang-en');
+      langToggle.textContent = 'FR';
+      document.documentElement.lang = 'en';
+    } else {
+      body.classList.remove('lang-en');
+      body.classList.add('lang-fr');
+      langToggle.textContent = 'EN';
+      document.documentElement.lang = 'fr';
+    }
+  });
+
+  /* Active nav on scroll */
+  const navLinks = document.querySelectorAll('nav.primary a');
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  }, { passive: true });
+
+  /* Reveal on scroll */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* Mobile menu */
+  const navToggle = document.getElementById('navToggle');
+  const primaryNav = document.getElementById('primaryNav');
+  navToggle.addEventListener('click', () => primaryNav.classList.toggle('open'));
+  navLinks.forEach(a => a.addEventListener('click', () => primaryNav.classList.remove('open')));
+</script>
 </body>
 </html>
